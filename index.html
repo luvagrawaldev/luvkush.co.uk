@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luv Agrawal | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        :root {
+            --netflix-red: #e50914;
+            --netflix-black: #141414;
+            --netflix-dark-gray: #2f2f2f;
+            --netflix-light-gray: #b3b3b3;
+            --netflix-white: #ffffff;
+            --linkedin-blue: #0077b5;
+        }
+
+        body {
+            background-color: var(--netflix-black);
+            color: var(--netflix-white);
+            overflow-x: hidden;
+        }
+
+        /* Language Selection */
+        .language-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--netflix-black);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .netflix-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--netflix-red);
+            margin-bottom: 3rem;
+        }
+
+        .language-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .language-options {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .language-option {
+            padding: 15px 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .language-option:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .language-option.selected {
+            background-color: var(--netflix-red);
+        }
+
+        .language-continue {
+            padding: 12px 30px;
+            background-color: var(--netflix-red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .language-continue:hover {
+            background-color: #b8070f;
+        }
+
+        /* Main Content - Hidden initially */
+        .main-content {
+            display: none;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--netflix-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--netflix-white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--netflix-light-gray);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--netflix-white);
+            color: var(--netflix-black);
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-secondary {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: var(--netflix-white);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(109, 109, 110, 0.5);
+        }
+
+        /* Profile Photo Section */
+        .profile-section {
+            padding: 80px 50px;
+            background-color: rgba(255, 255, 255, 0.02);
+            text-align: center;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--netflix-red);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
+        }
+
+        .profile-text {
+            text-align: left;
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--netflix-white);
+        }
+
+        .profile-title {
+            font-size: 1.2rem;
+            color: var(--netflix-red);
+            margin-bottom: 15px;
+        }
+
+        .profile-bio {
+            color: var(--netflix-light-gray);
+            line-height: 1.6;
+        }
+
+        
+        .linkedin-section {
+            padding: 80px 50px;
+            background: linear-gradient(135deg, var(--linkedin-blue) 0%, #004471 100%);
+            text-align: center;
+        }
+
+        .linkedin-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .linkedin-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .linkedin-description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .linkedin-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .linkedin-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background-color: white;
+            color: var(--linkedin-blue);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .linkedin-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background-color: #f0f0f0;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: 50px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            color: var(--netflix-red);
+            margin-bottom: 15px;
+        }
+
+        .skill-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 5px 0;
+            color: var(--netflix-light-gray);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: scale(1.03);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            color: var(--netflix-light-gray);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .project-link {
+            color: var(--netflix-red);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: #b8070f;
+        }
+
+        /* Education Timeline */
+        .timeline {
+            max-width: 800px;
+        }
+
+        .timeline-item {
+            margin-bottom: 30px;
+            padding-left: 30px;
+            border-left: 2px solid var(--netflix-red);
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--netflix-red);
+        }
+
+        .timeline-date {
+            color: var(--netflix-red);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Certificates */
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .certificate-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .certificate-icon {
+            font-size: 2.5rem;
+            color: var(--netflix-red);
+            margin-bottom: 15px;
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .contact-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--netflix-red);
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 50px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            color: var(--netflix-light-gray);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--netflix-white);
+        }
+
+        .copyright {
+            color: var(--netflix-light-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header, .hero, .section, .profile-section, .linkedin-section {
+                padding: 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-text {
+                text-align: center;
+            }
+            
+            .linkedin-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Selection Screen -->
+    <div class="language-screen" id="languageScreen">
+        <div class="netflix-logo">NETFLIX</div>
+        <h2 class="language-title">Who's watching?</h2>
+        <div class="language-options">
+            <div class="language-option selected" data-lang="en">Luv</div>
+            <div class="language-option" data-lang="analyst">Data Analyst</div>
+            <div class="language-option" data-lang="developer">AI Developer</div>
+        </div>
+        <button class="language-continue" id="continueBtn">Enter Portfolio</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">NETFLIX</div>
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#profile">Profile</a>
+                <a href="#linkedin">LinkedIn</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#education">Education</a>
+                <a href="#certificates">Certificates</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title">Luv Agrawal</h1>
+                <p class="hero-description">Data Analytics & AI Enthusiast | BSc Computer Science Student | Passionate about Solving Real-World Problems with Data</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="viewWorkBtn">
+                        <i class="fas fa-play"></i> View My Work
+                    </button>
+                    <button class="btn btn-secondary" id="contactBtn">
+                        <i class="fas fa-info-circle"></i> Contact Me
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Photo Section -->
+        <section class="profile-section" id="profile">
+            <div class="profile-container">
+                <img src="luv.jpg" alt="Luv Agrawal" class="profile-photo">
+                <div class="profile-text">
+                    <h2 class="profile-name">Luv Agrawal</h2>
+                    <p class="profile-title">Data Analytics & AI Specialist</p>
+                    <p class="profile-bio">Second-year BSc Computer Science student at University of West London, passionate about Data Analytics, Artificial Intelligence, and Networking. Proficient in Python, Java Core, SQL, Excel, and experienced with libraries such as Pandas, NumPy, and Seaborn for data analysis and visualization.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LinkedIn Highlight Section -->
+        <section class="linkedin-section" id="linkedin">
+            <div class="linkedin-container">
+                <h2 class="linkedin-title">Let's Connect on LinkedIn!</h2>
+                <p class="linkedin-description">Join my professional network of 500+ connections including data scientists, AI researchers, and industry professionals. I regularly share insights about data analytics, machine learning, and my latest projects.</p>
+                
+                <div class="linkedin-stats">
+                    <div class="stat">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Connections</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Projects Shared</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Profile Strength</div>
+                    </div>
+                </div>
+                
+                <a href="https://www.linkedin.com/in/luvagrawaluwl/" class="linkedin-button" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                    Connect on LinkedIn
+                </a>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="section" id="skills">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="skill-title">Programming</h3>
+                    <ul class="skill-list">
+                        <li>Python</li>
+                        <li>SQL</li>
+                        <li>Java Core</li>
+                        <li>Hadoop</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="skill-title">Libraries & Tools</h3>
+                    <ul class="skill-list">
+                        <li>Pandas & NumPy</li>
+                        <li>Matplotlib & Seaborn</li>
+                        <li>Power Query</li>
+                        <li>FastAPI</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="skill-title">Data Analytics</h3>
+                    <ul class="skill-list">
+                        <li>Exploratory Data Analysis</li>
+                        <li>Data Visualization</li>
+                        <li>API Integration</li>
+                        <li>Statistical Analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="section" id="projects">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="NHS Data Analysis" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">NHS Data Analysis</h3>
+                        <p class="project-description">Analyzed a synthetic NHS dataset of 100,000 patient records using SQL-style queries in Python.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/luv-codes/nhs_sql_project" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="https://www.linkedin.com/posts/luvagrawaluwl_i-used-sql-in-python-to-analyze-data-full-activity-7387216933873594368-RIXB" class="project-link" target="_blank">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Hospitality EDA" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">EDA in Hospitality Domain</h3>
+                        <p class="project-description">Conducted Exploratory Data Analysis on real-world hotel booking datasets.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/luv-codes/eda_in_hospitality_domain" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="https://www.linkedin.com/posts/luvagrawaluwl_project-1-exploratory-data-analysis-in-activity-7320848375489175553-jxQY" class="project-link" target="_blank">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Grade Analyzer" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Student Grade Analyzer</h3>
+                        <p class="project-description">Designed a program to read student grades from CSV and calculate statistics.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/luv-codes/Student-Grade-Analyser" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="https://www.linkedin.com/in/luvagrawaluwl/" class="project-link" target="_blank">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section class="section" id="education">
+            <h2 class="section-title">Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-2027</div>
+                    <h3 class="timeline-title">BSc in Computer Science</h3>
+                    <p class="project-description">University of West London, UK</p>
+                    <p class="project-description">Relevant Modules: Algorithms and Data Types, Information Systems and Databases, Data Communication</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2022-2024</div>
+                    <h3 class="timeline-title">Higher Secondary Education</h3>
+                    <p class="project-description">Sarvodaya Senior Secondary School, UK</p>
+                    <p class="project-description">Science Stream with focus on Physics, Chemistry, and Mathematics</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certificates Section -->
+        <section class="section" id="certificates">
+            <h2 class="section-title">Certificates & Achievements</h2>
+            <div class="certificates-grid">
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Microsoft x EDI Competition</h3>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Mathematics Olympiad (Grade 5)</h3>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Mathematics Olympiad (Grade 7)</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section" id="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email</h3>
+                    <p>luvga07@gmail.com</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Phone</h3>
+                    <p>+447823705339</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Location</h3>
+                    <p>London, UK</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/luvagrawaluwl/" class="social-link" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/luv-codes/" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:luvga07@gmail.com" class="social-link">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Luv Agrawal. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Language Selection
+        document.getElementById('continueBtn').addEventListener('click', function() {
+            document.getElementById('languageScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        });
+
+        // Language options selection
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.language-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Button functionality
+        document.getElementById('viewWorkBtn').addEventListener('click', function() {
+            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('contactBtn').addEventListener('click', function() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'var(--netflix-black)';
+            } else {
+                header.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%)';
+            }
+        });
+    </script>
+</body>
+</html>
